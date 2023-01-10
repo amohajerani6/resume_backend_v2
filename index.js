@@ -35,7 +35,7 @@ var jwtCheck = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/.well-known/jwks.json",
   }),
-  audience: "http://localhost:3002",
+  audience: "http://localhost:3001",
   issuer: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/",
   algorithms: ["RS256"],
 })
@@ -81,7 +81,7 @@ app.delete("/dash/:page", jwtCheck, async function (req, res) {
   var record = await mongoModelPages.findOne({
     page: page,
   })
-  console.log("sdfsdfsdfsdfds")
+
   if (!record || record.username == req.auth.sub) {
     // remove file from S3
     await deleteFileS3(page)
@@ -127,7 +127,7 @@ app.get("/dash/:page", jwtCheck, async function (req, res) {
 
 app.get("/view/:page", async function (req, res) {
   let page = req.params.page
-  var ip = "24.48.0.1" //req.clientIp
+  var ip = req.clientIp
   console.log("ip ", ip)
   request("http://ip-api.com/json/" + ip, { json: true }, (err, res, body) => {
     if (err) {
@@ -145,6 +145,6 @@ app.get("/view/:page", async function (req, res) {
   // res.sendFile(__dirname + "/files/" + page + ".pdf")
 })
 
-app.listen(3002, function () {
-  console.log({ msg: "Listening on port 3002..." })
+app.listen(3001, function () {
+  console.log({ msg: "Listening on port 3001..." })
 })
