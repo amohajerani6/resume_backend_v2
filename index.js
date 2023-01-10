@@ -77,6 +77,7 @@ app.get("/pages", jwtCheck, async function (req, res) {
 })
 
 app.get("/", function (req, res) {
+  console.log("Received request")
   res.send("The API is working")
 })
 
