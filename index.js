@@ -76,6 +76,10 @@ app.get("/pages", jwtCheck, async function (req, res) {
   }
 })
 
+app.get("/", function (req, res) {
+  res.send("The API is working")
+})
+
 app.delete("/dash/:page", jwtCheck, async function (req, res) {
   let page = req.params.page
   var record = await mongoModelPages.findOne({
