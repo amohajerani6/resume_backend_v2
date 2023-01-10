@@ -1,5 +1,10 @@
 var express = require("express")
-const { uploadFile, getFileStream, deleteFileS3 } = require("./s3")
+const {
+  uploadFile,
+  getFileStream,
+  deleteFileS3,
+  downloadFile,
+} = require("./s3")
 const requestIp = require("request-ip")
 const request = require("request")
 var app = express()
@@ -144,13 +149,12 @@ app.get("/view/:page", async function (req, res) {
     var newTraffic = new mongoModelTraffic(body)
     newTraffic.save()
   })
-  res.attachment(page)
-  var fileStream = getFileStream(page)
-  fileStream.pipe(res)
+
   //const readStream = getFileStream(page) // Pipe the file directly to the client
   //readStream.pipe(res)
-
-  //res.sendFile(__dirname + "/downloads/" + page + ".pdf")
+  const filePath = __dirname + "/downloads/" + page + ".pdf"
+  await downloadFile(filePath, page)
+  res.sendFile(filePath)
 })
 
 app.listen(3001, function () {

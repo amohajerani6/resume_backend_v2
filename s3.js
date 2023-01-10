@@ -23,7 +23,7 @@ function uploadFile(path, filename) {
   return s3.upload(uploadParams).promise()
 }
 
-// download from S3
+// get from S3 for streaming to client
 function getFileStream(key) {
   downloadParams = {
     Bucket: "gagali",
@@ -31,8 +31,27 @@ function getFileStream(key) {
   }
   return s3.getObject(downloadParams).createReadStream()
 }
+// download file
+async function downloadFile(filePath, key) {
+  let file = fs.createWriteStream(filePath)
+  params = {
+    Bucket: "gagali",
+    Key: key + ".pdf",
+  }
+  return new Promise((resolve, reject) => {
+    s3.getObject(params)
+      .createReadStream()
+      .on("end", () => {
+        return resolve()
+      })
+      .on("error", (error) => {
+        return reject(error)
+      })
+      .pipe(file)
+  })
+}
 
-// Delete filr from S3
+// Delete file from S3
 function deleteFileS3(key) {
   console.log(key, " was inputed")
   return s3.deleteObject(
@@ -47,4 +66,4 @@ function deleteFileS3(key) {
   )
 }
 
-module.exports = { uploadFile, getFileStream, deleteFileS3 }
+module.exports = { uploadFile, getFileStream, deleteFileS3, downloadFile }
