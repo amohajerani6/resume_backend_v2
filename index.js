@@ -146,8 +146,8 @@ app.get("/view/:page", async function (req, res) {
   })
 
   const readStream = getFileStream(page) // Pipe the file directly to the client
-  readStream.pipe(res)
-  // res.sendFile(__dirname + "/files/" + page + ".pdf")
+  //readStream.pipe(res)
+  res.sendFile(__dirname + "/uploads/" + "doc" + ".pdf")
 })
 
 app.listen(3001, function () {
