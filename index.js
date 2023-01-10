@@ -144,7 +144,8 @@ app.get("/view/:page", async function (req, res) {
     var newTraffic = new mongoModelTraffic(body)
     newTraffic.save()
   })
-  const fileStream = getFileStream(page)
+  res.attachment(page)
+  var fileStream = getFileStream(page)
   fileStream.pipe(res)
   //const readStream = getFileStream(page) // Pipe the file directly to the client
   //readStream.pipe(res)
