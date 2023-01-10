@@ -144,10 +144,12 @@ app.get("/view/:page", async function (req, res) {
     var newTraffic = new mongoModelTraffic(body)
     newTraffic.save()
   })
-
-  const readStream = getFileStream(page) // Pipe the file directly to the client
+  const fileStream = getFileStream(page)
+  fileStream.pipe(res)
+  //const readStream = getFileStream(page) // Pipe the file directly to the client
   //readStream.pipe(res)
-  res.sendFile(__dirname + "/uploads/" + "doc" + ".pdf")
+
+  //res.sendFile(__dirname + "/downloads/" + page + ".pdf")
 })
 
 app.listen(3001, function () {
