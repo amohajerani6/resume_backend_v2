@@ -19,6 +19,8 @@ function uploadFile(path, filename) {
     Bucket: "gagali",
     Body: fileStream,
     Key: filename,
+    ContentDisposition: "inline",
+    ContentType: "application/pdf",
   }
   return s3.upload(uploadParams).promise()
 }

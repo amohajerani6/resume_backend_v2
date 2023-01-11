@@ -150,11 +150,11 @@ app.get("/view/:page", async function (req, res) {
     newTraffic.save()
   })
 
-  //const readStream = getFileStream(page) // Pipe the file directly to the client
-  //readStream.pipe(res)
-  const filePath = __dirname + "/downloads/" + page + ".pdf"
-  await downloadFile(filePath, page)
-  res.sendFile(filePath)
+  const readStream = getFileStream(page) // Pipe the file directly to the client
+  readStream.pipe(res)
+  //  const filePath = __dirname + "/downloads/" + page + ".pdf"
+  //  await downloadFile(filePath, page)
+  //  res.sendFile(filePath)
 })
 
 app.listen(3001, function () {
