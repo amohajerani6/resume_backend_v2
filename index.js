@@ -40,7 +40,7 @@ var jwtCheck = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/.well-known/jwks.json",
   }),
-  audience: "https://epe5gfqw17.execute-api.us-east-1.amazonaws.com",
+  audience: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/api/v2/",
   issuer: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/",
   algorithms: ["RS256"],
 })
@@ -73,6 +73,7 @@ app.post(
 )
 
 app.get("/pages", jwtCheck, async function (req, res) {
+  console.log("/pages endpoint was reached")
   try {
     var queryResults = await mongoModelPages.find({ username: req.auth.sub })
     res.send(JSON.stringify(queryResults))
