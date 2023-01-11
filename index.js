@@ -40,7 +40,7 @@ var jwtCheck = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/.well-known/jwks.json",
   }),
-  audience: "http://localhost:3001",
+  audience: "https://epe5gfqw17.execute-api.us-east-1.amazonaws.com",
   issuer: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/",
   algorithms: ["RS256"],
 })
