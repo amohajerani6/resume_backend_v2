@@ -1,4 +1,5 @@
 var express = require("express")
+const authConfig = require("./auth_config.json")
 const {
   uploadFile,
   getFileStream,
@@ -22,6 +23,19 @@ const dbLink = process.env.dbLink
 mongoose.connect(dbLink + "/resume?retryWrites=true&w=majority", {
   useNewUrlParser: true,
 })
+
+if (
+  !authConfig.domain ||
+  !authConfig.audience ||
+  authConfig.audience === "YOUR_API_IDENTIFIER"
+) {
+  console.log(
+    "Exiting: Please make sure that auth_config.json is in place and populated with valid domain and audience values"
+  )
+
+  process.exit()
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads")
@@ -40,8 +54,8 @@ var jwtCheck = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/.well-known/jwks.json",
   }),
-  audience: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/api/v2/",
-  issuer: "https://dev-xy0rbu4evnjwlphn.us.auth0.com/",
+  audience: authConfig.audience,
+  issuer: `https://${authConfig.domain}/`,
   algorithms: ["RS256"],
 })
 
