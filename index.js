@@ -73,7 +73,7 @@ app.post(
 )
 
 app.get("/pages", async function (req, res) {
-  console.log("header: ", req.header)
+  console.log("header: ", req.auth)
   try {
     var queryResults = await mongoModelPages.find({ username: req.auth.sub })
     res.send(JSON.stringify(queryResults))
